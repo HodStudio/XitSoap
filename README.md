@@ -64,3 +64,30 @@ var wsCon = new WebService("http://localhost/XitSoap/ProductService.asmx", "GetP
 wsCon.Invoke();
 var actual = wsCon.ResultXML;
 ````
+
+## Other situations
+
+Sometimes, to keep a good code, we want to use different names from the model provided by the webservice that we are consuming. For do this, the _XitSoap_ provides an Attribute called _WsMapper_, and will transform your property to the correct destination property.
+
+Filter from WebService
+```cs
+public class ProductFilter
+{
+    /// <summary>
+    /// Different property name to test the WsMapper
+    /// </summary>
+    public string ProductCode { get; set; }
+}
+```
+
+YourModel
+```cs
+public class ProductInput
+{
+    /// <summary>
+    /// Code for search product. In this case, the property on the webservice has a different name from the model.
+    /// </summary>
+    [WsMapper("ProductCode")]
+    public string Code { get; set; }
+}
+```
