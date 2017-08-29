@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>HodStudio.XitSoap</id>
+    <version>1.0.0</version>
+    <authors>Cussa</authors>
+    <owners>HodStudio</owners>
+    <licenseUrl>https://github.com/Cussa/XitSoap/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Cussa/XitSoap/</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>An alternative way to do SOAP Requests without use the WSDL</description>
+    <releaseNotes>Version 1.0: Release of the project</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>soap request</tags>
+  </metadata>
+</package>
