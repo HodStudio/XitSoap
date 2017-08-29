@@ -3,6 +3,14 @@ _An alternative way to do SOAP Requests without use the WSDL_
 
 In 2015, in one of the companies that I worked, we face a very simple problem: the code generated automatically by Visual Studio to use webservices has a lot of shits. Facing this problem, I resolve to create a library that, based on you model, generates the SOAP requests, with code smells on you code.
 
+## Download it using NuGet
+
+```
+Install-Package HodStudio.XitSoap
+```
+
+Link: https://www.nuget.org/packages/HodStudio.XitSoap
+
 ## How to use
 
 ### Possibility 1: object return
