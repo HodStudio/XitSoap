@@ -19,8 +19,8 @@ namespace HodStudio.XitSoap
         internal string Method { get; set; }
         internal string Namespace { get; set; }
         internal Dictionary<string, string> Params = new Dictionary<string, string>();
-        public XDocument ResponseSOAP = XDocument.Parse("<root/>");
-        public XDocument ResultXML = XDocument.Parse("<root/>");
+        public XDocument ResponseSoap = XDocument.Parse("<root/>");
+        public XDocument ResultXml = XDocument.Parse("<root/>");
         public string ResultString = string.Empty;
 
         internal Dictionary<string, string> mappers = new Dictionary<string, string>();
@@ -82,8 +82,8 @@ namespace HodStudio.XitSoap
         {
             Method = string.Empty;
             Params = new Dictionary<string, string>();
-            ResultXML = null;
-            ResponseSOAP = ResultXML;
+            ResultXml = null;
+            ResponseSoap = ResultXml;
             ResultString = Method;
         }
     }

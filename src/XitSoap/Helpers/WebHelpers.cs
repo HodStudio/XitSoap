@@ -34,19 +34,19 @@ namespace HodStudio.XitSoap.Helpers
             namespMan.AddNamespace(StringConstants.XmlResultDummyNamespace, service.Namespace);
             var methodNameResult = string.Format(StringConstants.XmlResultResultFormat, methodName);
 
-            XElement webMethodResult = service.ResponseSOAP.XPathSelectElement(string.Format(StringConstants.XmlResultXPathSelectorFormat, methodNameResult), namespMan);
+            XElement webMethodResult = service.ResponseSoap.XPathSelectElement(string.Format(StringConstants.XmlResultXPathSelectorFormat, methodNameResult), namespMan);
             // If the result is an XML, return it and convert it to string
             if (webMethodResult.FirstNode.NodeType == XmlNodeType.Element)
             {
-                service.ResultXML = XDocument.Parse(webMethodResult.ToString());
-                service.ResultXML = XmlHelpers.RemoveNamespaces(service.ResultXML);
-                service.ResultString = service.ResultXML.ToString();
+                service.ResultXml = XDocument.Parse(webMethodResult.ToString());
+                service.ResultXml = XmlHelpers.RemoveNamespaces(service.ResultXml);
+                service.ResultString = service.ResultXml.ToString();
             }
             // If the result is a string, return it and convert it to XML (creating a root node to wrap the result)
             else
             {
                 service.ResultString = webMethodResult.FirstNode.ToString();
-                service.ResultXML = XDocument.Parse(string.Format(StringConstants.XmlResultXDocumentFormat, service.ResultString));
+                service.ResultXml = XDocument.Parse(string.Format(StringConstants.XmlResultXDocumentFormat, service.ResultString));
             }
         }
 
@@ -85,7 +85,7 @@ namespace HodStudio.XitSoap.Helpers
             using (StreamReader responseReader = new StreamReader(req.GetResponse().GetResponseStream()))
             {
                 string result = responseReader.ReadToEnd();
-                service.ResponseSOAP = XDocument.Parse(result);
+                service.ResponseSoap = XDocument.Parse(result);
                 service.ExtractResult(methodName);
             }
         }

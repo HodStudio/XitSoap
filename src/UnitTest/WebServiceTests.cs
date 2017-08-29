@@ -81,7 +81,7 @@ namespace HodStudio.XitSoap.Tests
         {
             var wsCon = new WebService("http://localhost/XitSoap/ProductService.asmx", "GetProduct");
             wsCon.Invoke();
-            var actual = wsCon.ResultXML;
+            var actual = wsCon.ResultXml;
 
             var expected = System.Xml.Linq.XDocument.Parse(@"<GetProductResult>
   <ReturnCode>1</ReturnCode>
@@ -110,7 +110,7 @@ namespace HodStudio.XitSoap.Tests
             var actualString = wsCon.ResultString;
             var expectedString = "true";
 
-            var actualXml = wsCon.ResultXML;
+            var actualXml = wsCon.ResultXml;
             var expectedXml = "<root>true</root>";
 
             Assert.AreEqual(expectedString, actualString);
@@ -135,15 +135,15 @@ namespace HodStudio.XitSoap.Tests
             wsCon.AddParameter(paramName, paramValue);
 
             wsCon.ResultString = "true";
-            wsCon.ResultXML = new System.Xml.Linq.XDocument();
-            wsCon.ResponseSOAP = new System.Xml.Linq.XDocument();
+            wsCon.ResultXml = new System.Xml.Linq.XDocument();
+            wsCon.ResponseSoap = new System.Xml.Linq.XDocument();
         }
 
         internal static void AssertInfoCleanLastInvokeTest(WebService wsCon)
         {
             Assert.AreEqual(wsCon.ResultString, string.Empty);
-            Assert.AreEqual(wsCon.ResultXML, null);
-            Assert.AreEqual(wsCon.ResponseSOAP, null);
+            Assert.AreEqual(wsCon.ResultXml, null);
+            Assert.AreEqual(wsCon.ResponseSoap, null);
             Assert.AreEqual(wsCon.Method, string.Empty);
             Assert.AreEqual(wsCon.Params.Count, 0);
         }

@@ -40,7 +40,7 @@ namespace UnitTest
             wsCon.AddParameter("input", new ProductInput() { Code = "xpto" });
             wsCon.Invoke();
 
-            var actual = wsCon.ResultXML;
+            var actual = wsCon.ResultXml;
 
             var expected = System.Xml.Linq.XDocument.Parse(@"<SearchProductResult>
   <ReturnCode>1</ReturnCode>
