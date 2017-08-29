@@ -91,3 +91,7 @@ public class ProductInput
     public string Code { get; set; }
 }
 ```
+
+## Download the source code and running
+
+To run the tests, we provide a mock project Web. It should be runned on http://localhost/XitSoap so the tests can try to connect to it.
