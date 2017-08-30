@@ -2,15 +2,18 @@
 <package >
   <metadata>
     <id>HodStudio.XitSoap</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>Cussa</authors>
-    <owners>HodStudio</owners>
+    <owners>Cussa</owners>
     <licenseUrl>https://github.com/Cussa/XitSoap/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/Cussa/XitSoap/</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>An alternative way to do SOAP Requests without use the WSDL</description>
-    <releaseNotes>Version 1.0: Release of the project</releaseNotes>
+    <releaseNotes>Version 1.0.1
+    - Fixing problems with soapheadername and namespace
+    - Fixing problems with simple return types
+    - New tests using GlobalWeather and WebServiceX</releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>soap request</tags>
+    <tags>soap request soap-web-services webservices</tags>
   </metadata>
 </package>
