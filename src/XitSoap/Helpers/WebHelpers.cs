@@ -60,7 +60,7 @@ namespace HodStudio.XitSoap.Helpers
             service.AssertCanInvoke(methodName);
 
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(service.Url);
-            req.Headers.Add(StringConstants.SoapHeaderName, string.Format(StringConstants.SoapHeaderFormat, service.Namespace, methodName));
+            req.Headers.Add(StringConstants.SoapHeaderName, CreateSoapHeaderName(service.Namespace, methodName));
             req.ContentType = StringConstants.SoapContentType;
             req.Accept = StringConstants.SoapAccept;
             req.Method = StringConstants.SoapMethod;
@@ -88,6 +88,14 @@ namespace HodStudio.XitSoap.Helpers
                 service.ResponseSoap = XDocument.Parse(result);
                 service.ExtractResult(methodName);
             }
+        }
+
+        private static string CreateSoapHeaderName(string @namespace, string methodName)
+        {
+            var fixedNamespace = @namespace;
+            if (fixedNamespace.EndsWith("/"))
+                fixedNamespace = fixedNamespace.Substring(0, fixedNamespace.Length - 1);
+            return string.Format(StringConstants.SoapHeaderFormat, fixedNamespace, methodName);
         }
     }
 }
