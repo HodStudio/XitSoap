@@ -98,7 +98,7 @@ namespace HodStudio.XitSoap
 
         public WebService(string _methodName = "")
         {
-            System.Reflection.MemberInfo info = typeof(ResultType);
+            MemberInfo info = typeof(ResultType);
             var contract = ((WsContractAttribute)info.GetCustomAttributes(typeof(WsContractAttribute), true).FirstOrDefault());
             if (contract == null)
                 throw new ArgumentNullException("Contract", "You tried to invoke a webservice without specifying the WebService's Contract/URL.");
@@ -109,7 +109,7 @@ namespace HodStudio.XitSoap
             Namespace = contract.Namespace;
         }
         public WebService(string baseUrl, string methodName = "", string @namespace = "http://tempuri.org/")
-            : base(baseUrl, methodName, @namespace) { }
+            : base(baseUrl, methodName, @namespace) { this.GetMapperAttributes(typeof(ResultType)); }
 
         /// <summary>
         /// Using the base url, invokes the WebMethod informed in the creation of class
@@ -136,6 +136,12 @@ namespace HodStudio.XitSoap
         private void ExtractResultClass()
         {
             var methodNameResult = Method + "Result";
+            if (!ResultString.Contains(methodNameResult))
+            {
+                ResultObject = (ResultType)Convert.ChangeType(ResultString, typeof(ResultType));
+                return;
+            }
+
             var xmlMapper = ResultString.Replace(methodNameResult, typeof(ResultType).Name);
             xmlMapper = this.ApplyMappers(xmlMapper);
 
