@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiError.cs" />
+    <Compile Include="CityZipSearch.cs" />
     <Compile Include="LoginInput.cs" />
     <Compile Include="LoginWithoutContractOutput.cs" />
     <Compile Include="LoginOutput.cs" />

@@ -85,6 +85,42 @@ namespace HodStudio.XitSoap.Tests
         }
 
         [TestMethod]
+        public void InvokeTestConvertMilesToKilometers()
+        {
+            var wsCon = new WebService<double>("http://www.webservicex.net/ConvertSpeed.asmx", null, "http://www.webserviceX.NET/");
+            wsCon.AddParameter("speed", 100D);
+            wsCon.AddParameter("FromUnit", "milesPerhour");
+            wsCon.AddParameter("ToUnit", "kilometersPerhour");
+            wsCon.Invoke("ConvertSpeed");
+            var result = wsCon.ResultObject;
+            Assert.AreEqual(160.93470878864446D, result);
+        }
+
+        [TestMethod]
+        public void InvokeTestGetInfoByZip()
+        {
+            var wsCon = new WebService<CityZipSearch>("http://www.webservicex.net/uszip.asmx", null, "http://www.webserviceX.NET");
+            wsCon.AddParameter("USZip", "85001");
+            wsCon.Invoke("GetInfoByZIP");
+            var result = JsonConvert.SerializeObject(wsCon.ResultObject);
+            var expected = JsonConvert.SerializeObject(new CityZipSearch()
+            {
+                Result = new CityResultSet()
+                {
+                    City = new CityInfo()
+                    {
+                        Name = "Phoenix",
+                        State = "AZ",
+                        ZipCode = 85001,
+                        AreaCode = 602,
+                        TimeZone = "M"
+                    }
+                }
+            });
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void CleanLastInvokeTest()
         {
             var wsCon = new WebService<LoginOutput>();

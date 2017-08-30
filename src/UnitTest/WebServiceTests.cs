@@ -118,6 +118,17 @@ namespace HodStudio.XitSoap.Tests
         }
 
         [TestMethod]
+        public void InvokeTestUsingGlobalWeatherReturningString()
+        {
+            var wsCon = new WebService("http://www.webservicex.com/globalweather.asmx", "GetCitiesByCountry", "http://www.webserviceX.NET");
+            wsCon.AddParameter("CountryName", "CZE");
+            wsCon.Invoke();
+            var actualString = wsCon.ResultString;
+            var expectedString = "&lt;NewDataSet&gt;\r\n  &lt;Table&gt;\r\n    &lt;Country&gt;Czech Republic&lt;/Country&gt;\r\n    &lt;City&gt;Holesov&lt;/City&gt;\r\n  &lt;/Table&gt;\r\n  &lt;Table&gt;\r\n    &lt;Country&gt;Czech Republic&lt;/Country&gt;\r\n    &lt;City&gt;Karlovy Vary&lt;/City&gt;\r\n  &lt;/Table&gt;\r\n  &lt;Table&gt;\r\n    &lt;Country&gt;Czech Republic&lt;/Country&gt;\r\n    &lt;City&gt;Ostrava / Mosnov&lt;/City&gt;\r\n  &lt;/Table&gt;\r\n  &lt;Table&gt;\r\n    &lt;Country&gt;Czech Republic&lt;/Country&gt;\r\n    &lt;City&gt;Praha / Ruzyne&lt;/City&gt;\r\n  &lt;/Table&gt;\r\n  &lt;Table&gt;\r\n    &lt;Country&gt;Czech Republic&lt;/Country&gt;\r\n    &lt;City&gt;Brno / Turany&lt;/City&gt;\r\n  &lt;/Table&gt;\r\n&lt;/NewDataSet&gt;";
+            Assert.AreEqual(expectedString, actualString);
+        }
+
+        [TestMethod]
         public void CleanLastInvokeTest()
         {
             var wsCon = new WebService();
