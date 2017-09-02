@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HodStudio.XitSoap</id>
-    <version>2.0.0-beta</version>
+    <version>2.0.0</version>
     <authors>Cussa</authors>
     <owners>Cussa</owners>
     <licenseUrl>https://github.com/HodStudio/XitSoap/blob/master/LICENSE</licenseUrl>
@@ -12,6 +12,8 @@
     <releaseNotes>
       Version 2.0.0
       - Major refactory about the way to use the library
+
+      Please, if you are updating from version 1.x, verify the migration guideline (https://github.com/HodStudio/XitSoap/wiki/0.1.-Migrating-from-v1-to-v2)
     </releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>soap request soap-web-services webservices</tags>
