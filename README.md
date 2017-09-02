@@ -12,7 +12,7 @@ Install-Package HodStudio.XitSoap
 Link: https://www.nuget.org/packages/HodStudio.XitSoap
 ## ATTENTION
 If you are using the version 1.x from our library, please, read carefully how to upgrade to version 2.x because it is a major refactory to improve some usages. It's nothing complicated, but if you just upgrade from version 1 to version 2, you code will have some problems.
-### [Migrating From v1 to v2](https://github.com/HodStudio/XitSoap/wiki/Migrating-from-v1-to-v2).
+### [Migrating from v1 to v2](https://github.com/HodStudio/XitSoap/wiki/0.1.-Migrating-from-v1-to-v2).
 
 ## How to use
 Crete a object of _WebService_, with the base URL and the namespace that will be used.
