@@ -1,7 +1,7 @@
 # XitSoap
 _An alternative way to do SOAP Requests without use the WSDL_
 
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=HodStudio.XitSoap)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=code_smells)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=bugs)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=vulnerabilities)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap)
+[![Quality Gate](https://sonarqube.com/api/badges/gate?key=HodStudio.XitSoap)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=code_smells)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=bugs)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=vulnerabilities)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=duplicated_lines_density)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap)
 
 In 2015, we face a very simple problem: the code generated automatically by Visual Studio to use webservices has a lot of shits. Facing this problem, we resolve to create a library that, based on you model, generates the SOAP requests, without code smells on you code.
 
