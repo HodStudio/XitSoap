@@ -60,9 +60,9 @@
     <Compile Include="Attributes\WsMapperAttributeTests.cs" />
     <Compile Include="MyExpectedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebHelpersTests.cs" />
+    <Compile Include="ValidationInvokeTests.cs" />
     <Compile Include="WebServiceTests.cs" />
-    <Compile Include="WebServiceOfTypeTests.cs" />
+    <Compile Include="InvokeServicesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">

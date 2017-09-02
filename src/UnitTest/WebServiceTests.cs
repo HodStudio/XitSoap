@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HodStudio.XitSoap;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HodStudio.XitSoap.Tests.Model;
 using HodStudio.XitSoap.Helpers;
 using System.IO;
@@ -19,40 +13,38 @@ namespace HodStudio.XitSoap.Tests
     public class WebServiceTests
     {
         [TestMethod]
-        public void WebServiceTest()
+        public void WebServiceWithoutParametersTest()
         {
             var ws = new WebService();
-            Assert.AreEqual(ws.Url, null);
-            Assert.AreEqual(ws.Method, null);
-            Assert.AreEqual(ws.Namespace, null);
+            Assert.AreEqual(string.Empty, ws.Url);
+            Assert.AreEqual(StringConstants.DefaultNamespace, ws.Namespace);
         }
 
         [TestMethod]
-        public void WebServiceTest1()
+        public void WebServiceWithParametersTest()
         {
             var url = "http://webservice.systemsecurityservice.com.test";
-            var method = "authentication";
             var xmlnamespace = "http://webservice.systemsecurityservice.com.test";
-            var ws = new WebService(url, method, xmlnamespace);
+            var ws = new WebService(url, xmlnamespace);
+
             Assert.AreEqual(ws.Url, url);
-            Assert.AreEqual(ws.Method, method);
             Assert.AreEqual(ws.Namespace, xmlnamespace);
         }
 
         [TestMethod]
-        public void AddParameterTest()
+        public void AddSimpleParameterTest()
         {
             var wsCon = new WebService();
             var paramName = "abc";
             var paramValue = "xyz";
             wsCon.AddParameter(paramName, paramValue);
 
-            Assert.AreEqual(wsCon.Params.Count, 1);
-            Assert.AreEqual(wsCon.Params[paramName], paramValue);
+            Assert.AreEqual(wsCon.Parameters.Count, 1);
+            Assert.AreEqual(wsCon.Parameters[paramName], paramValue);
         }
 
         [TestMethod]
-        public void AddParameterTest1()
+        public void AddComplexParameterTest()
         {
             var wsCon = new WebService();
             var paramName = "abc";
@@ -72,16 +64,15 @@ namespace HodStudio.XitSoap.Tests
                 completeXml.LoadXml(XmlHelpers.RemoveNamespaces(mr.ToString()).ToString());
             }
 
-            Assert.AreEqual(wsCon.Params.Count, 1);
-            Assert.AreEqual(wsCon.Params[paramName], completeXml.DocumentElement.InnerXml);
+            Assert.AreEqual(wsCon.Parameters.Count, 1);
+            Assert.AreEqual(wsCon.Parameters[paramName], completeXml.DocumentElement.InnerXml);
         }
 
         [TestMethod]
-        public void InvokeTest()
+        public void InvokeReturningDefaultTest()
         {
-            var wsCon = new WebService("http://localhost/XitSoap/ProductService.asmx", "GetProduct");
-            wsCon.Invoke();
-            var actual = wsCon.ResultXml;
+            var wsCon = new WebService("http://localhost/XitSoap/ProductService.asmx");
+            var actual = wsCon.Invoke("GetProduct").XmlResult;
 
             var expected = System.Xml.Linq.XDocument.Parse(@"<GetProductResult>
   <ReturnCode>1</ReturnCode>
@@ -99,64 +90,60 @@ namespace HodStudio.XitSoap.Tests
   </Products>
 </GetProductResult>");
 
+            //TODO: show how to use the library and convert the XML to Json
+
             Assert.AreEqual(expected.ToString(), actual.ToString());
         }
 
         [TestMethod]
-        public void InvokeTest1()
+        public void InvokeReturningBoolTest()
         {
-            var wsCon = new WebService("http://localhost/XitSoap/ProductService.asmx", "IsValid");
-            wsCon.Invoke();
-            var actualString = wsCon.ResultString;
-            var expectedString = "true";
+            var wsCon = new WebService("http://localhost/XitSoap/ProductService.asmx");
+            var actual = wsCon.Invoke<bool>("IsValid");
+            var expected = true;
 
-            var actualXml = wsCon.ResultXml;
-            var expectedXml = "<root>true</root>";
-
-            Assert.AreEqual(expectedString, actualString);
-            Assert.AreEqual(expectedXml, actualXml.ToString());
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void InvokeTestUsingGlobalWeatherReturningString()
         {
-            var wsCon = new WebService("http://www.webservicex.com/globalweather.asmx", "GetCitiesByCountry", "http://www.webserviceX.NET");
+            var wsCon = new WebService("http://www.webservicex.com/globalweather.asmx", "http://www.webserviceX.NET");
             wsCon.AddParameter("CountryName", "CZE");
-            wsCon.Invoke();
-            var actualString = wsCon.ResultString;
+            var actualString = wsCon.Invoke("GetCitiesByCountry").StringResult;
             var expectedString = "&lt;NewDataSet&gt;\r\n  &lt;Table&gt;\r\n    &lt;Country&gt;Czech Republic&lt;/Country&gt;\r\n    &lt;City&gt;Holesov&lt;/City&gt;\r\n  &lt;/Table&gt;\r\n  &lt;Table&gt;\r\n    &lt;Country&gt;Czech Republic&lt;/Country&gt;\r\n    &lt;City&gt;Karlovy Vary&lt;/City&gt;\r\n  &lt;/Table&gt;\r\n  &lt;Table&gt;\r\n    &lt;Country&gt;Czech Republic&lt;/Country&gt;\r\n    &lt;City&gt;Ostrava / Mosnov&lt;/City&gt;\r\n  &lt;/Table&gt;\r\n  &lt;Table&gt;\r\n    &lt;Country&gt;Czech Republic&lt;/Country&gt;\r\n    &lt;City&gt;Praha / Ruzyne&lt;/City&gt;\r\n  &lt;/Table&gt;\r\n  &lt;Table&gt;\r\n    &lt;Country&gt;Czech Republic&lt;/Country&gt;\r\n    &lt;City&gt;Brno / Turany&lt;/City&gt;\r\n  &lt;/Table&gt;\r\n&lt;/NewDataSet&gt;";
             Assert.AreEqual(expectedString, actualString);
         }
 
-        [TestMethod]
-        public void CleanLastInvokeTest()
-        {
-            var wsCon = new WebService();
-            AddInfoCleanLastInvokeTest(wsCon);
+        //[TestMethod]
+        //public void CleanLastInvokeTest()
+        //{
+        //    var wsCon = new WebService();
+        //    AddInfoCleanLastInvokeTest(wsCon);
 
-            wsCon.CleanLastInvoke();
+        //    wsCon.CleanLastInvoke();
 
-            AssertInfoCleanLastInvokeTest(wsCon);
-        }
+        //    AssertInfoCleanLastInvokeTest(wsCon);
+        //}
 
-        internal static void AddInfoCleanLastInvokeTest(WebService wsCon)
-        {
-            var paramName = "abc";
-            var paramValue = "xyz";
-            wsCon.AddParameter(paramName, paramValue);
+        //internal static void AddInfoCleanLastInvokeTest(WebService wsCon)
+        //{
+        //    var paramName = "abc";
+        //    var paramValue = "xyz";
+        //    wsCon.AddParameter(paramName, paramValue);
 
-            wsCon.ResultString = "true";
-            wsCon.ResultXml = new System.Xml.Linq.XDocument();
-            wsCon.ResponseSoap = new System.Xml.Linq.XDocument();
-        }
+        //    wsCon.ResultString = "true";
+        //    wsCon.ResultXml = new System.Xml.Linq.XDocument();
+        //    wsCon.ResponseSoap = new System.Xml.Linq.XDocument();
+        //}
 
-        internal static void AssertInfoCleanLastInvokeTest(WebService wsCon)
-        {
-            Assert.AreEqual(wsCon.ResultString, string.Empty);
-            Assert.AreEqual(wsCon.ResultXml, null);
-            Assert.AreEqual(wsCon.ResponseSoap, null);
-            Assert.AreEqual(wsCon.Method, string.Empty);
-            Assert.AreEqual(wsCon.Params.Count, 0);
-        }
+        //internal static void AssertInfoCleanLastInvokeTest(WebService wsCon)
+        //{
+        //    Assert.AreEqual(wsCon.ResultString, string.Empty);
+        //    Assert.AreEqual(wsCon.ResultXml, null);
+        //    Assert.AreEqual(wsCon.ResponseSoap, null);
+        //    Assert.AreEqual(wsCon.Method, string.Empty);
+        //    Assert.AreEqual(wsCon.Params.Count, 0);
+        //}
     }
 }

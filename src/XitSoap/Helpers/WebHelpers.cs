@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 using System.Xml.XPath;
 
 namespace HodStudio.XitSoap.Helpers
@@ -21,10 +17,8 @@ namespace HodStudio.XitSoap.Helpers
         /// <param name="methodName">Web Method name (optional)</param>
         internal static void AssertCanInvoke(this WebService service, string methodName = "")
         {
-            if (string.IsNullOrEmpty(service.Url))
-                throw new ArgumentNullException("Url", "You tried to invoke a webservice without specifying the WebService's URL.");
-            if (string.IsNullOrEmpty(methodName) && string.IsNullOrEmpty(service.Method))
-                throw new ArgumentNullException("Method", "You tried to invoke a webservice without specifying the WebMethod.");
+            if (string.IsNullOrEmpty(methodName))
+                throw new ArgumentNullException("methodName", "You tried to invoke a webservice without specifying the WebMethod.");
         }
 
         internal static void ExtractResult(this WebService service, string methodName)
@@ -34,19 +28,19 @@ namespace HodStudio.XitSoap.Helpers
             namespMan.AddNamespace(StringConstants.XmlResultDummyNamespace, service.Namespace);
             var methodNameResult = string.Format(StringConstants.XmlResultResultFormat, methodName);
 
-            XElement webMethodResult = service.ResponseSoap.XPathSelectElement(string.Format(StringConstants.XmlResultXPathSelectorFormat, methodNameResult), namespMan);
+            XElement webMethodResult = service.Result.SoapResponse.XPathSelectElement(string.Format(StringConstants.XmlResultXPathSelectorFormat, methodNameResult), namespMan);
             // If the result is an XML, return it and convert it to string
             if (webMethodResult.FirstNode.NodeType == XmlNodeType.Element)
             {
-                service.ResultXml = XDocument.Parse(webMethodResult.ToString());
-                service.ResultXml = XmlHelpers.RemoveNamespaces(service.ResultXml);
-                service.ResultString = service.ResultXml.ToString();
+                var xmlResult = XDocument.Parse(webMethodResult.ToString());
+                service.Result.XmlResult = XmlHelpers.RemoveNamespaces(xmlResult);
+                service.Result.StringResult = service.Result.XmlResult.ToString();
             }
             // If the result is a string, return it and convert it to XML (creating a root node to wrap the result)
             else
             {
-                service.ResultString = webMethodResult.FirstNode.ToString();
-                service.ResultXml = XDocument.Parse(string.Format(StringConstants.XmlResultXDocumentFormat, service.ResultString));
+                service.Result.StringResult = webMethodResult.FirstNode.ToString();
+                service.Result.XmlResult = XDocument.Parse(string.Format(StringConstants.XmlResultXDocumentFormat, service.Result.StringResult));
             }
         }
 
@@ -65,29 +59,27 @@ namespace HodStudio.XitSoap.Helpers
             req.Accept = StringConstants.SoapAccept;
             req.Method = StringConstants.SoapMethod;
 
-            using (Stream stm = req.GetRequestStream())
+            var stm = req.GetRequestStream();
+            var postValues = new StringBuilder();
+            foreach (var param in service.Parameters)
             {
-                var postValues = new StringBuilder();
-                foreach (var param in service.Params)
-                {
-                    if (encode) postValues.AppendFormat(StringConstants.SoapParamFormat, HttpUtility.HtmlEncode(param.Key), HttpUtility.HtmlEncode(param.Value));
-                    else postValues.AppendFormat(StringConstants.SoapParamFormat, param.Key, param.Value);
-                }
-                postValues = service.ApplyMappersInput(postValues);
-
-                var soapStr = string.Format(StringConstants.SoapStringFormat, methodName, postValues.ToString(), service.Namespace);
-                using (StreamWriter stmw = new StreamWriter(stm))
-                {
-                    stmw.Write(soapStr);
-                }
+                if (encode) postValues.AppendFormat(StringConstants.SoapParamFormat, HttpUtility.HtmlEncode(param.Key), HttpUtility.HtmlEncode(param.Value));
+                else postValues.AppendFormat(StringConstants.SoapParamFormat, param.Key, param.Value);
             }
+            postValues = service.ParametersMappers.ApplyMappers(postValues);
 
-            using (StreamReader responseReader = new StreamReader(req.GetResponse().GetResponseStream()))
-            {
-                string result = responseReader.ReadToEnd();
-                service.ResponseSoap = XDocument.Parse(result);
-                service.ExtractResult(methodName);
-            }
+            var soapStr = string.Format(StringConstants.SoapStringFormat, methodName, postValues.ToString(), service.Namespace);
+
+            using (StreamWriter stmw = new StreamWriter(stm))
+                stmw.Write(soapStr);
+
+            stm.Close();
+
+            var responseReader = new StreamReader(req.GetResponse().GetResponseStream());
+            string result = responseReader.ReadToEnd();
+            service.Result.SoapResponse = XDocument.Parse(result);
+            service.ExtractResult(methodName);
+            responseReader.Close();
         }
 
         private static string CreateSoapHeaderName(string @namespace, string methodName)

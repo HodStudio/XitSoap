@@ -1,50 +1,37 @@
-﻿using System;
+﻿using HodStudio.XitSoap.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
-using System.Web;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
-using System.Xml.XPath;
-using HodStudio.XitSoap.Helpers;
-
 namespace HodStudio.XitSoap
 {
-    public class WebService
+    class WebService
     {
-        internal string Url { get; set; }
-        internal string Method { get; set; }
-        internal string Namespace { get; set; }
-        internal Dictionary<string, string> Params = new Dictionary<string, string>();
-        public XDocument ResponseSoap = XDocument.Parse("<root/>");
-        public XDocument ResultXml = XDocument.Parse("<root/>");
-        public string ResultString = string.Empty;
-
-        internal Dictionary<string, string> mappers = new Dictionary<string, string>();
-
+        #region Properties
+        internal Dictionary<string, string> Parameters { get; set; } = new Dictionary<string, string>();
+        internal Dictionary<string, string> ParametersMappers { get; set; } = new Dictionary<string, string>();
+        internal Dictionary<string, string> ResponseMappers { get; set; } = new Dictionary<string, string>();
+        public string Url { get; private set; }
+        public string Namespace { get; private set; }
+        internal WebServiceResult Result { get; set; }
+        private string DefaultNamespace;
+        private readonly bool ClearUrl;
+        #endregion
+        #region Constructors
         public WebService()
+            : this(string.Empty, StringConstants.DefaultNamespace) { }
+        public WebService(string url)
+           : this(url, StringConstants.DefaultNamespace) { }
+        public WebService(string url, string @namespace)
         {
-        }
-        public WebService(string baseUrl, string methodName = "", string @namespace = "http://tempuri.org/")
-        {
-            Url = baseUrl;
-            Method = methodName;
+            Url = url;
             Namespace = @namespace;
+            ClearUrl = string.IsNullOrEmpty(url);
         }
-
-        /// <summary>
-        /// Adds a parameter to the WebMethod invocation.
-        /// </summary>
-        /// <param name="name">Name of the WebMethod parameter (case sensitive)</param>
-        /// <param name="value">Value to pass to the paramenter</param>
-        public void AddParameter(string name, string value)
-        {
-            this.AddMethodParameter(name, value);
-        }
-
+        #endregion
+        #region Parameters
         /// <summary>
         /// Adds a parameter to the WebMethod invocation, using a type in the value.
         /// </summary>
@@ -54,112 +41,97 @@ namespace HodStudio.XitSoap
         {
             this.AddMethodParameter(name, value);
         }
-
+        #endregion
+        #region Invoke Methods
         /// <summary>
-        /// Using the base url, invokes the WebMethod informed in the creation of class
+        /// Using the base url, invokes the WebMethod with the given name
         /// </summary>
-        /// <param name="encode">Encode params</param>
-        public void Invoke(bool encode = false)
+        /// <param name="methodName">Web Method name</param>
+        public WebServiceResult Invoke(string methodName)
         {
-            Invoke(Method, encode);
+            return Invoke(methodName, false);
         }
-
         /// <summary>
         /// Using the base url, invokes the WebMethod with the given name
         /// </summary>
         /// <param name="methodName">Web Method name</param>
         /// <param name="encode">Encode params</param>
-        public void Invoke(string methodName, bool encode = false)
+        public WebServiceResult Invoke(string methodName, bool encode)
         {
-            this.InvokeService(methodName, encode);
+            Invoke<object>(methodName, encode);
+            return Result;
         }
-
-        /// <summary>
-        /// Cleans all internal data used in the last invocation, except the WebService's URL.
-        /// This avoids creating a new WebService object when the URL you want to use is the same.
-        /// </summary>
-        public void CleanLastInvoke()
-        {
-            Method = string.Empty;
-            Params = new Dictionary<string, string>();
-            ResultXml = null;
-            ResponseSoap = ResultXml;
-            ResultString = Method;
-        }
-    }
-
-    /// <summary>
-    /// This class is an alternative when you can't use Service References. It allows you to invoke Web Methods on a given Web Service URL.
-    /// Based on the code from http://stackoverflow.com/questions/9482773/web-service-without-adding-a-reference
-    /// </summary>
-    public class WebService<ResultType> : WebService
-    {
-        public ResultType ResultObject = default(ResultType);
-
-        public WebService(string _methodName = "")
-        {
-            MemberInfo info = typeof(ResultType);
-            var contract = ((WsContractAttribute)info.GetCustomAttributes(typeof(WsContractAttribute), true).FirstOrDefault());
-            if (contract == null)
-                throw new ArgumentNullException("Contract", "You tried to invoke a webservice without specifying the WebService's Contract/URL.");
-            this.GetMapperAttributes(typeof(ResultType));
-
-            Url = ServiceCatalog.GetServiceAddress(contract.ContractName);
-            Method = _methodName;
-            Namespace = contract.Namespace;
-        }
-        public WebService(string baseUrl, string methodName = "", string @namespace = "http://tempuri.org/")
-            : base(baseUrl, methodName, @namespace) { this.GetMapperAttributes(typeof(ResultType)); }
-
-        /// <summary>
-        /// Using the base url, invokes the WebMethod informed in the creation of class
-        /// </summary>
-        public new void Invoke(bool encode = false)
-        {
-            base.Invoke(encode);
-            ExtractResultClass();
-        }
-
         /// <summary>
         /// Using the base url, invokes the WebMethod with the given name
         /// </summary>
         /// <param name="methodName">Web Method name</param>
-        public new void Invoke(string methodName, bool encode = false)
+        public ResultType Invoke<ResultType>(string methodName)
+        { return Invoke<ResultType>(methodName, false); }
+        /// <summary>
+        /// Using the base url, invokes the WebMethod with the given name
+        /// </summary>
+        /// <param name="methodName">Web Method name</param>
+        /// <param name="encode">Encode params</param>
+        public ResultType Invoke<ResultType>(string methodName, bool encode)
         {
-            var originalMethod = Method;
-            Method = methodName;
-            base.Invoke(methodName, encode);
-            ExtractResultClass();
-            Method = originalMethod;
-        }
-
-        private void ExtractResultClass()
-        {
-            var methodNameResult = Method + "Result";
-            if (!ResultString.Contains(methodNameResult))
+            try
             {
-                ResultObject = (ResultType)Convert.ChangeType(ResultString, typeof(ResultType));
-                return;
+                if (string.IsNullOrWhiteSpace(methodName))
+                    throw new ArgumentNullException("methodName", "You tried to invoke a webservice without specifying the WebMethod.");
+                MemberInfo info = typeof(ResultType);
+                var contract = ((WsContractAttribute)info.GetCustomAttributes(typeof(WsContractAttribute), true).FirstOrDefault());
+                if (string.IsNullOrEmpty(Url) && contract == null)
+                    throw new MethodAccessException("You tried to invoke a webservice without specifying the WebService's Contract/URL.");
+                if (contract != null)
+                {
+                    if (!ServiceCatalog.Catalog.ContainsKey(contract.ContractName))
+                        throw new KeyNotFoundException("The contract was not found on the Service Catalog.");
+                    var urlServiceCatalog = ServiceCatalog.Catalog[contract.ContractName];
+                    if (!string.IsNullOrEmpty(Url) && urlServiceCatalog != Url)
+                        throw new AmbiguousMatchException("The URL's contract is different from the URL informed on the WebService constructor.");
+                    else
+                        Url = urlServiceCatalog;
+                    if (!string.IsNullOrWhiteSpace(contract.Namespace))
+                    {
+                        DefaultNamespace = Namespace;
+                        Namespace = contract.Namespace;
+                    }
+                }
+                Result = new WebServiceResult();
+                ResponseMappers.GetMapperAttributes(typeof(ResultType));
+                this.InvokeService(methodName, encode);
+                return ExtractResultClass<ResultType>(methodName);
             }
-
-            var xmlMapper = ResultString.Replace(methodNameResult, typeof(ResultType).Name);
-            xmlMapper = this.ApplyMappers(xmlMapper);
-
+            finally
+            {
+                CleanLastInvoke();
+            }
+        }
+        #endregion
+        private ResultType ExtractResultClass<ResultType>(string methodName)
+        {
+            if (typeof(ResultType) == typeof(object))
+                return default(ResultType);
+            var methodNameResult = methodName + "Result";
+            if (!Result.StringResult.Contains(methodNameResult))
+                return (ResultType)Convert.ChangeType(Result.StringResult, typeof(ResultType));
+            var xmlMapper = Result.StringResult.Replace(methodNameResult, typeof(ResultType).Name);
+            xmlMapper = ResponseMappers.ApplyMappers(xmlMapper);
             XmlSerializer serializer = new XmlSerializer(typeof(ResultType));
-            using (var rdr = new StringReader(xmlMapper))
-            {
-                ResultObject = (ResultType)serializer.Deserialize(rdr);
-            }
+            var rdr = new StringReader(xmlMapper);
+            var result = (ResultType)serializer.Deserialize(rdr);
+            rdr.Close();
+            return result;
         }
-
-        /// <summary>
-        /// Cleans all internal data used in the last invocation, except the WebService's URL.
-        /// This avoids creating a new WebService object when the URL you want to use is the same.
-        /// </summary>
-        public new void CleanLastInvoke()
+        private void CleanLastInvoke()
         {
-            base.CleanLastInvoke();
-            ResultObject = default(ResultType);
+            Parameters.Clear();
+            ResponseMappers.Clear();
+            ParametersMappers.Clear();
+            if (ClearUrl)
+                Url = string.Empty;
+            if (!string.IsNullOrEmpty(DefaultNamespace))
+                Namespace = DefaultNamespace;
         }
     }
 }
