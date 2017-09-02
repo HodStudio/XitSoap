@@ -89,29 +89,8 @@ namespace HodStudio.XitSoap
                 var contract = ((WsContractAttribute)info.GetCustomAttributes(typeof(WsContractAttribute), true).FirstOrDefault());
                 if (string.IsNullOrEmpty(Url) && contract == null)
                     throw new MethodAccessException("You tried to invoke a webservice without specifying the WebService's Contract/URL.");
-                if (contract != null)
-                {
-                    string contractUrl = null;
-
-                    if (!ServiceCatalog.Catalog.ContainsKey(contract.ContractName))
-                    {
-                        if (string.IsNullOrEmpty(Url))
-                            throw new KeyNotFoundException("The contract was not found on the Service Catalog.");
-                    }
-                    else
-                        contractUrl = ServiceCatalog.Catalog[contract.ContractName];
-
-                    if (!string.IsNullOrEmpty(contractUrl))
-                    {
-                        if (!string.IsNullOrEmpty(Url) && contractUrl != Url)
-                            throw new AmbiguousMatchException("The URL's contract is different from the URL informed on the WebService constructor.");
-                        else
-                            Url = contractUrl;
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(contract.Namespace))
-                        Namespace = contract.Namespace;
-                }
+                ValidateContract(contract);
+                
                 Result = new WebServiceResult();
                 ResponseMappers.GetMapperAttributes(typeof(ResultType));
                 this.InvokeService(methodName, encode);
@@ -123,6 +102,33 @@ namespace HodStudio.XitSoap
             }
         }
         #endregion
+
+        private void ValidateContract(WsContractAttribute contract)
+        {
+            if (contract == null)
+                return;
+
+            string contractUrl = null;
+
+            if (!ServiceCatalog.Catalog.ContainsKey(contract.ContractName))
+            {
+                if (string.IsNullOrEmpty(Url))
+                    throw new KeyNotFoundException("The contract was not found on the Service Catalog.");
+            }
+            else
+                contractUrl = ServiceCatalog.Catalog[contract.ContractName];
+
+            if (!string.IsNullOrEmpty(contractUrl))
+            {
+                if (!string.IsNullOrEmpty(Url) && contractUrl != Url)
+                    throw new AmbiguousMatchException("The URL's contract is different from the URL informed on the WebService constructor.");
+                else
+                    Url = contractUrl;
+            }
+
+            if (!string.IsNullOrWhiteSpace(contract.Namespace))
+                Namespace = contract.Namespace;
+        }
 
         private ResultType ExtractResultClass<ResultType>(string methodName)
         {
