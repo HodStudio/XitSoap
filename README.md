@@ -1,7 +1,7 @@
 # XitSoap
 _An alternative way to do SOAP Requests without use the WSDL_
 
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=hodstudio.xitsoap)](https://sonarqube.com/dashboard?id=hodstudio.xitsoap)
+[![Quality Gate](https://sonarqube.com/api/badges/gate?key=HodStudio.XitSoap)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap)
 
 In 2015, in one of the companies that I worked, we face a very simple problem: the code generated automatically by Visual Studio to use webservices has a lot of shits. Facing this problem, I resolve to create a library that, based on you model, generates the SOAP requests, with code smells on you code.
 
