@@ -65,7 +65,7 @@ namespace HodStudio.XitSoap.Tests
         }
 
         [TestMethod]
-        public void InvokeUsZipWithoutUrlAndWithContractTest()
+        public void InvokeUsZipWithoutUrlAndWithNamespaceTest()
         {
             var wsCon = new WebService(string.Empty, "http://www.webserviceX.NET");
             wsCon.AddParameter("USZip", "85001");
@@ -88,7 +88,7 @@ namespace HodStudio.XitSoap.Tests
         }
 
         [TestMethod]
-        public void InvokeUsZipWithoutUrlAndWithNamespaceTest()
+        public void InvokeUsZipWithoutUrlAndNamespaceTest()
         {
             var wsCon = new WebService();
             wsCon.AddParameter("USZip", "85001");
@@ -108,6 +108,30 @@ namespace HodStudio.XitSoap.Tests
                 }
             });
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void InvokeUsZipWithUrlAndWithoutNamespaceTest()
+        {
+            var wsCon = new WebService("http://www.webservicex.net/uszip.asmx");
+            wsCon.AddParameter("USZip", "85001");
+            var result = JsonConvert.SerializeObject(wsCon.Invoke<CityZipSearchWithContractForOnlyNamespace>("GetInfoByZIP"));
+            var expected = JsonConvert.SerializeObject(new CityZipSearch()
+            {
+                Result = new CityResultSet()
+                {
+                    City = new CityInfo()
+                    {
+                        Name = "Phoenix",
+                        State = "AZ",
+                        ZipCode = 85001,
+                        AreaCode = 602,
+                        TimeZone = "M"
+                    }
+                }
+            });
+            Assert.AreEqual(expected, result);
+            Assert.AreEqual("http://www.webservicex.net/uszip.asmx", wsCon.Url);
         }
 
         [TestCleanup]

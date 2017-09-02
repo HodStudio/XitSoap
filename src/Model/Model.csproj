@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ApiError.cs" />
     <Compile Include="CityZipSearchWithContractAndNamespace.cs" />
+    <Compile Include="CityZipSearchWithContractForOnlyNamespace.cs" />
     <Compile Include="CityZipSearchWithContractAndWithoutNamespace.cs" />
     <Compile Include="CityZipSearch.cs" />
     <Compile Include="ClassWithWrongContract.cs" />

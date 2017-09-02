@@ -13,12 +13,16 @@ namespace HodStudio.XitSoap
         internal Dictionary<string, string> Parameters { get; set; } = new Dictionary<string, string>();
         internal Dictionary<string, string> ParametersMappers { get; set; } = new Dictionary<string, string>();
         internal Dictionary<string, string> ResponseMappers { get; set; } = new Dictionary<string, string>();
+
         public string Url { get; private set; }
         public string Namespace { get; private set; }
+
         internal WebServiceResult Result { get; set; }
-        private string DefaultNamespace;
-        private readonly bool ClearUrl;
+
+        private readonly string DefaultNamespace;
+        private readonly string DefaultUrl;
         #endregion
+
         #region Constructors
         public WebService()
             : this(string.Empty, StringConstants.DefaultNamespace) { }
@@ -28,9 +32,11 @@ namespace HodStudio.XitSoap
         {
             Url = url;
             Namespace = @namespace;
-            ClearUrl = string.IsNullOrEmpty(url);
+            DefaultUrl = url;
+            DefaultNamespace = @namespace;
         }
         #endregion
+
         #region Parameters
         /// <summary>
         /// Adds a parameter to the WebMethod invocation, using a type in the value.
@@ -42,6 +48,7 @@ namespace HodStudio.XitSoap
             this.AddMethodParameter(name, value);
         }
         #endregion
+
         #region Invoke Methods
         /// <summary>
         /// Using the base url, invokes the WebMethod with the given name
@@ -84,18 +91,26 @@ namespace HodStudio.XitSoap
                     throw new MethodAccessException("You tried to invoke a webservice without specifying the WebService's Contract/URL.");
                 if (contract != null)
                 {
+                    string contractUrl = null;
+
                     if (!ServiceCatalog.Catalog.ContainsKey(contract.ContractName))
-                        throw new KeyNotFoundException("The contract was not found on the Service Catalog.");
-                    var urlServiceCatalog = ServiceCatalog.Catalog[contract.ContractName];
-                    if (!string.IsNullOrEmpty(Url) && urlServiceCatalog != Url)
-                        throw new AmbiguousMatchException("The URL's contract is different from the URL informed on the WebService constructor.");
-                    else
-                        Url = urlServiceCatalog;
-                    if (!string.IsNullOrWhiteSpace(contract.Namespace))
                     {
-                        DefaultNamespace = Namespace;
-                        Namespace = contract.Namespace;
+                        if (string.IsNullOrEmpty(Url))
+                            throw new KeyNotFoundException("The contract was not found on the Service Catalog.");
                     }
+                    else
+                        contractUrl = ServiceCatalog.Catalog[contract.ContractName];
+
+                    if (!string.IsNullOrEmpty(contractUrl))
+                    {
+                        if (!string.IsNullOrEmpty(Url) && contractUrl != Url)
+                            throw new AmbiguousMatchException("The URL's contract is different from the URL informed on the WebService constructor.");
+                        else
+                            Url = contractUrl;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(contract.Namespace))
+                        Namespace = contract.Namespace;
                 }
                 Result = new WebServiceResult();
                 ResponseMappers.GetMapperAttributes(typeof(ResultType));
@@ -108,6 +123,7 @@ namespace HodStudio.XitSoap
             }
         }
         #endregion
+
         private ResultType ExtractResultClass<ResultType>(string methodName)
         {
             if (typeof(ResultType) == typeof(object))
@@ -123,15 +139,14 @@ namespace HodStudio.XitSoap
             rdr.Close();
             return result;
         }
+
         private void CleanLastInvoke()
         {
+            Url = DefaultUrl;
+            Namespace = DefaultNamespace;
             Parameters.Clear();
             ResponseMappers.Clear();
             ParametersMappers.Clear();
-            if (ClearUrl)
-                Url = string.Empty;
-            if (!string.IsNullOrEmpty(DefaultNamespace))
-                Namespace = DefaultNamespace;
         }
     }
 }
