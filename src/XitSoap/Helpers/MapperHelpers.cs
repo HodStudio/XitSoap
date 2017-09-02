@@ -3,63 +3,57 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HodStudio.XitSoap.Helpers
 {
     internal static class MapperHelpers
     {
-        internal static void GetMapperAttributes(this WebService service, Type type)
+        private static void GetMapperAttributes(this IDictionary<string, string> mappers, MemberInfo info)
         {
-            MemberInfo info = type;
             var ca = ((WsMapperAttribute[])info.GetCustomAttributes(typeof(WsMapperAttribute), true)).ToList();
-            ca.ForEach(x => service.mappers.Add(x.Source, type.Name));
+            ca.ForEach(x => mappers.Add(x.Source, info.Name));
+        }
+
+        internal static void GetMapperAttributes(this Dictionary<string, string> mappers, Type type)
+        {
+            mappers.GetMapperAttributes((MemberInfo)type);
 
             var props = type.GetProperties();
             foreach (var item in props)
-            {
-                GetMapperAttributes(service, item);
-            }
+                GetMapperAttributes(mappers, item);
         }
-        internal static void GetMapperAttributes(this WebService service, PropertyInfo prop)
+        internal static void GetMapperAttributes(this Dictionary<string, string> mappers, PropertyInfo prop)
         {
-            var ca = ((WsMapperAttribute[])prop.GetCustomAttributes(typeof(WsMapperAttribute), true)).ToList();
-            ca.ForEach(x => service.mappers.Add(x.Source, prop.Name));
+            mappers.GetMapperAttributes((MemberInfo)prop);
+
             Type type = prop.PropertyType;
             if (type.GenericTypeArguments.Length > 0)
-            {
                 foreach (var item in type.GenericTypeArguments)
-                {
-                    GetMapperAttributes(service, item);
-                }
-            }
+                    GetMapperAttributes(mappers, item);
             else if (!type.IsPrimitive && type != typeof(string) && type != typeof(DateTime))
-            {
-                GetMapperAttributes(service, type);
-            }
+                GetMapperAttributes(mappers, type);
         }
 
-        internal static string ApplyMappers(this WebService service, string input)
+        internal static string ApplyMappers(this Dictionary<string, string> mappers, string input)
         {
-            var ret = input;
-            foreach (var item in service.mappers)
-            {
-                ret = ret.Replace($"<{item.Key}>", $"<{item.Value}>");
-                ret = ret.Replace($"</{item.Key}>", $"</{item.Value}>");
-                ret = ret.Replace($"<{item.Key}/>", $"<{item.Value}/>");
-            }
-            return ret;
+            var inputSb = new StringBuilder(input);
+            foreach (var item in mappers)
+                inputSb.ReplaceMapper(item.Key, item.Value);
+            return inputSb.ToString();
         }
-        internal static StringBuilder ApplyMappersInput(this WebService service, StringBuilder input)
+        internal static StringBuilder ApplyMappers(this Dictionary<string, string> mappers, StringBuilder input)
         {
-            var ret = input;
-            foreach (var item in service.mappers)
-            {
-                ret = ret.Replace($"<{item.Value}>", $"<{item.Key}>");
-                ret = ret.Replace($"</{item.Value}>", $"</{item.Key}>");
-                ret = ret.Replace($"<{item.Value}/>", $"<{item.Key}/>");
-            }
-            return ret;
+            foreach (var item in mappers)
+                input.ReplaceMapper(item.Value, item.Key);
+            return input;
+        }
+
+        private static StringBuilder ReplaceMapper(this StringBuilder input, string source, string destiny)
+        {
+            input = input.Replace($"<{source}>", $"<{destiny}>");
+            input = input.Replace($"</{source}>", $"</{destiny}>");
+            input = input.Replace($"<{source}/>", $"<{destiny}/>");
+            return input;
         }
     }
 }

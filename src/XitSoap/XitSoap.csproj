@@ -47,6 +47,7 @@
     <Compile Include="Helpers\XmlHelpers.cs" />
     <Compile Include="ServiceCatalog.cs" />
     <Compile Include="WebService.cs" />
+    <Compile Include="WebServiceResult.cs" />
     <Compile Include="Attributes\WsContractAttribute.cs" />
     <Compile Include="Attributes\WsMapperAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

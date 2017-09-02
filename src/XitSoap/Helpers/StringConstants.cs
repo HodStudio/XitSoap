@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HodStudio.XitSoap.Helpers
+﻿namespace HodStudio.XitSoap.Helpers
 {
     internal class StringConstants
     {
+        protected StringConstants() { }
         internal const string SoapStringFormat = @"<?xml version=""1.0"" encoding=""utf-8""?>
                 <soap:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
                    xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
@@ -31,5 +26,7 @@ namespace HodStudio.XitSoap.Helpers
         internal const string XmlResultXDocumentFormat = "<root>{0}</root>";
         internal const string XmlNamespaceXmlsRegex = @"(xmlns:?[^=]*=[""][^""]*[""])";
         internal const string XmlNamespaceProperNameRegex = @"(<[A-z]*(\s+xsi:?[^=]*=[""][^""]*[""])+\s+/>)";
+
+        internal const string DefaultNamespace = "http://tempuri.org/";
     }
 }
