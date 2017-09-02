@@ -5,8 +5,8 @@
     <version>1.0.1</version>
     <authors>Cussa</authors>
     <owners>Cussa</owners>
-    <licenseUrl>https://github.com/Cussa/XitSoap/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/Cussa/XitSoap/</projectUrl>
+    <licenseUrl>https://github.com/HodStudio/XitSoap/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/HodStudio/XitSoap/</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>An alternative way to do SOAP Requests without use the WSDL</description>
     <releaseNotes>Version 1.0.1
