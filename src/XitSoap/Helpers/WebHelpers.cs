@@ -11,16 +11,6 @@ namespace HodStudio.XitSoap.Helpers
 {
     internal static class WebHelpers
     {
-        /// <summary>
-        /// Checks if the WebService's URL and the WebMethod's name are valid. If not, throws ArgumentNullException.
-        /// </summary>
-        /// <param name="methodName">Web Method name (optional)</param>
-        internal static void AssertCanInvoke(this WebService service, string methodName = "")
-        {
-            if (string.IsNullOrEmpty(methodName))
-                throw new ArgumentNullException("methodName", "You tried to invoke a webservice without specifying the WebMethod.");
-        }
-
         internal static void ExtractResult(this WebService service, string methodName)
         {
             // Selects just the elements with namespace http://tempuri.org/ (i.e. ignores SOAP namespace)
@@ -51,8 +41,6 @@ namespace HodStudio.XitSoap.Helpers
         /// <param name="encode">Do you want to encode your parameters? (default: true)</param>
         internal static void InvokeService(this WebService service, string methodName, bool encode)
         {
-            service.AssertCanInvoke(methodName);
-
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(service.Url);
             req.Headers.Add(StringConstants.SoapHeaderName, CreateSoapHeaderName(service.Namespace, methodName));
             req.ContentType = StringConstants.SoapContentType;
