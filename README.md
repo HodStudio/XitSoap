@@ -1,99 +1,35 @@
 # XitSoap
 _An alternative way to do SOAP Requests without use the WSDL_
 
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=HodStudio.XitSoap)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap)
+[![Quality Gate](https://sonarqube.com/api/badges/gate?key=HodStudio.XitSoap)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=code_smells)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=bugs)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=vulnerabilities)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap)
 
-In 2015, in one of the companies that I worked, we face a very simple problem: the code generated automatically by Visual Studio to use webservices has a lot of shits. Facing this problem, I resolve to create a library that, based on you model, generates the SOAP requests, with code smells on you code.
+In 2015, we face a very simple problem: the code generated automatically by Visual Studio to use webservices has a lot of shits. Facing this problem, we resolve to create a library that, based on you model, generates the SOAP requests, without code smells on you code.
 
 ## Download it using NuGet
-
 ```
 Install-Package HodStudio.XitSoap
 ```
-
 Link: https://www.nuget.org/packages/HodStudio.XitSoap
+## ATTENTION
+If you are using the version 1.x from our library, please, read carefully how to upgrade to version 2.x because it is a major refactory to improve some usages. It's nothing complicated, but if you just upgrade from version 1 to version 2, you code will have some problems.
+### [Migrating From v1 to v2](https://github.com/HodStudio/XitSoap/wiki/Migrating-from-v1-to-v2).
 
 ## How to use
-
-### Possibility 1: object return
-
-On application start, register the contract to the correct service, using the _ServiceCatalog_.
+Crete a object of _WebService_, with the base URL and the namespace that will be used.
 ```cs
-namespace ConsoleTester
-{
-    public static class Program
-    {
-        static void Main(string[] args)
-        {
-            ServiceCatalog.Catalog.Add("ProductContract", "http://localhost/XitSoap/ProductService.asmx");
-        }
-    }
-}
+var wsCon = new WebService("http://www.webservicex.net/ConvertSpeed.asmx", "http://www.webserviceX.NET/");
 ```
-
-After that, configure the return type of the service to use the specified contract.
+Add the parameters to execute you call.
 ```cs
-namespace HodStudio.XitSoap.Tests.Model
-{
-    [WsContract("ProductContract")]
-    public class ProductOutput : ApiResult
-    {
-        public List<Product> Products { get; set; }
-    }
-}
+wsCon.AddParameter("speed", 100D);
+wsCon.AddParameter("FromUnit", "milesPerhour");
+wsCon.AddParameter("ToUnit", "kilometersPerhour");
 ```
-
-Create a _WebService_ of the return type, using the method name to call and invoke it. The property ResultObject is a typed object from the return type.
+Invoke the method, providing the return type.
 ```cs
-var wsCon = new WebService<ProductOutput>("GetProduct");
-wsCon.Invoke();
-var result = wsCon.ResultObject;
+var result = wsCon.Invoke<double>("ConvertSpeed");
 ```
-
-You also can create a _WebService_ of the return type, but without specify the method name. When invoke, inform the correct method. This way, you can reuse the _WebService_ object.
-```cs
-var wsCon = new WebService<ProductOutput>();
-wsCon.Invoke("GetProduct");
-var result = wsCon.ResultObject;
-```
-
-### Possibility 2: string return
-
-When use this approach, the return is not from a type. So, you will have only the direct string from the return, using the property ResultXml or ResultString.
-Create the _WebService_ with the url. You can provide the method name too.
-```cs
-var wsCon = new WebService("http://localhost/XitSoap/ProductService.asmx", "GetProduct");
-wsCon.Invoke();
-var actual = wsCon.ResultXML;
-````
-
 ## Other situations
-
-Sometimes, to keep a good code, we want to use different names from the model provided by the webservice that we are consuming. For do this, the _XitSoap_ provides an Attribute called _WsMapper_, and will transform your property to the correct destination property.
-
-Filter from WebService
-```cs
-public class ProductFilter
-{
-    /// <summary>
-    /// Different property name to test the WsMapper
-    /// </summary>
-    public string ProductCode { get; set; }
-}
-```
-
-YourModel
-```cs
-public class ProductInput
-{
-    /// <summary>
-    /// Code for search product. In this case, the property on the webservice has a different name from the model.
-    /// </summary>
-    [WsMapper("ProductCode")]
-    public string Code { get; set; }
-}
-```
-
+For more situations and examples, please, take a look on our [Wiki](https://github.com/HodStudio/XitSoap/wiki).
 ## Download the source code and running
-
-To run the tests, we provide a mock project Web. It should be runned on http://localhost/XitSoap so the tests can try to connect to it.
+To run the tests, we provide a mock project Web. It should be runned on http://localhost/XitSoap so the tests can try to connect to it. Some of the tests are runned against some published web services on the internet. Case you are not connect to it, they will fail.
