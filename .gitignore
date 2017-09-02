@@ -299,6 +299,7 @@ __pycache__/
 *.xsd.cs
 
 nugetPack\.bat
+nugetPush\.bat
 sonarAnalysis\.bat
 
 # Sonarqube folder
