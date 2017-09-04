@@ -29,7 +29,9 @@ Invoke the method, providing the return type.
 ```cs
 var result = wsCon.Invoke<double>("ConvertSpeed");
 ```
-## Other situations
-For more situations and examples, please, take a look on our [Wiki](https://github.com/HodStudio/XitSoap/wiki).
+## Documentation
+For more situations and examples, please, take a look on our Documentation on the [Wiki](https://github.com/HodStudio/XitSoap/wiki).
+
+To see the planned new features, take a look on our [RoadMap](https://github.com/HodStudio/XitSoap/wiki#road-map-in-eternal-construction).
 ## Download the source code and running
 To run the tests, we provide a mock project Web. It should be runned on http://localhost/XitSoap so the tests can try to connect to it. Some of the tests are runned against some published web services on the internet. Case you are not connect to it, they will fail.
