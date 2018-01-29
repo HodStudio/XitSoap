@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Xml.Serialization;
 namespace HodStudio.XitSoap
 {
-    class WebService
+    public class WebService
     {
         #region Properties
         internal Dictionary<string, string> Parameters { get; set; } = new Dictionary<string, string>();
