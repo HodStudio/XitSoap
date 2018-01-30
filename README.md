@@ -8,7 +8,7 @@ _An alternative way to do SOAP Requests without use the WSDL_
 
 
 
-In 2015, we face a very simple problem: the code generated automatically by Visual Studio to use webservices has a lot of shit. Facing this problem, we created a library that, based on you modelr, generates the SOAP requests, without code smells on your code.
+In 2015, we face a very simple problem: the automatically generated code by Visual Studio to use webservices has a lot of code smells. Facing this problem, we created a library that generates the SOAP requests based on your models, without code smells in your code.
 
 ## Download it using NuGet
 ```
