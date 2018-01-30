@@ -115,6 +115,17 @@ namespace HodStudio.XitSoap.Tests
             Assert.AreEqual(expectedString, actualString);
         }
 
+        [TestMethod]
+        public void WebServiceMaracujaJuice()
+        {
+            var webService = new WebService("https://webservice.ourcompany.com/QuotaDistributionService/QuotaDistributionService.svc",
+"http://schemas.ourcompany.com/Ourcompany.Services.QuotaDistributionService/2.0");
+
+            webService.Invoke("IsAlive", "IQuotaDistributionService");
+
+
+        }
+
         //[TestMethod]
         //public void CleanLastInvokeTest()
         //{

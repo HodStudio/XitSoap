@@ -39,15 +39,14 @@ namespace HodStudio.XitSoap.Helpers
         /// </summary>
         /// <param name="methodName">Name of the web method you want to call (case sensitive)</param>
         /// <param name="encode">Do you want to encode your parameters? (default: true)</param>
-        internal static void InvokeService(this WebService service, string methodName, bool encode)
+        internal static void InvokeService(this WebService service, string methodName, bool encode, string soapActionComplement)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(service.Url);
-            req.Headers.Add(StringConstants.SoapHeaderName, CreateSoapHeaderName(service.Namespace, methodName));
+            req.Headers.Add(StringConstants.SoapHeaderName, CreateSoapHeaderName(service.Namespace, methodName, soapActionComplement));
             req.ContentType = StringConstants.SoapContentType;
             req.Accept = StringConstants.SoapAccept;
             req.Method = StringConstants.SoapMethod;
 
-            var stm = req.GetRequestStream();
             var postValues = new StringBuilder();
             foreach (var param in service.Parameters)
             {
@@ -58,6 +57,7 @@ namespace HodStudio.XitSoap.Helpers
 
             var soapStr = string.Format(StringConstants.SoapStringFormat, methodName, postValues.ToString(), service.Namespace);
 
+            var stm = req.GetRequestStream();
             using (StreamWriter stmw = new StreamWriter(stm))
                 stmw.Write(soapStr);
 
@@ -70,12 +70,16 @@ namespace HodStudio.XitSoap.Helpers
             responseReader.Close();
         }
 
-        private static string CreateSoapHeaderName(string @namespace, string methodName)
+        private static string CreateSoapHeaderName(string @namespace, string methodName, string soapActionComplement)
         {
             var fixedNamespace = @namespace;
+            var soapComplement = string.Empty;
+            if (!string.IsNullOrEmpty(soapActionComplement))
+                soapComplement = soapActionComplement + "/";
+
             if (fixedNamespace.EndsWith("/"))
                 fixedNamespace = fixedNamespace.Substring(0, fixedNamespace.Length - 1);
-            return string.Format(StringConstants.SoapHeaderFormat, fixedNamespace, methodName);
+            return string.Format(StringConstants.SoapHeaderFormat, fixedNamespace, soapComplement, methodName);
         }
     }
 }

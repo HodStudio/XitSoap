@@ -54,32 +54,54 @@ namespace HodStudio.XitSoap
         /// Using the base url, invokes the WebMethod with the given name
         /// </summary>
         /// <param name="methodName">Web Method name</param>
-        public WebServiceResult Invoke(string methodName)
-        {
-            return Invoke(methodName, false);
-        }
+        public WebServiceResult Invoke(string methodName) => Invoke(methodName, false);
         /// <summary>
         /// Using the base url, invokes the WebMethod with the given name
         /// </summary>
         /// <param name="methodName">Web Method name</param>
         /// <param name="encode">Encode params</param>
-        public WebServiceResult Invoke(string methodName, bool encode)
+        public WebServiceResult Invoke(string methodName, bool encode) => Invoke(methodName, encode, null);
+        /// <summary>
+        /// Using the base url, invokes the WebMethod with the given name
+        /// </summary>
+        /// <param name="methodName">Web Method name</param>
+        /// <param name="soapActionComplement">Includes more information on the SOAPAction parameter</param>
+        public WebServiceResult Invoke(string methodName, string soapActionComplement) => Invoke(methodName, false, soapActionComplement);
+        /// <summary>
+        /// Using the base url, invokes the WebMethod with the given name
+        /// </summary>
+        /// <param name="methodName">Web Method name</param>
+        /// <param name="encode">Encode params</param>
+        /// <param name="soapActionComplement">Includes more information on the SOAPAction parameter</param>
+        public WebServiceResult Invoke(string methodName, bool encode, string soapActionComplement)
         {
-            Invoke<object>(methodName, encode);
+            Invoke<object>(methodName, encode, soapActionComplement);
             return Result;
         }
         /// <summary>
         /// Using the base url, invokes the WebMethod with the given name
         /// </summary>
         /// <param name="methodName">Web Method name</param>
-        public ResultType Invoke<ResultType>(string methodName)
-        { return Invoke<ResultType>(methodName, false); }
+        public ResultType Invoke<ResultType>(string methodName) => Invoke<ResultType>(methodName, false);
         /// <summary>
         /// Using the base url, invokes the WebMethod with the given name
         /// </summary>
         /// <param name="methodName">Web Method name</param>
         /// <param name="encode">Encode params</param>
-        public ResultType Invoke<ResultType>(string methodName, bool encode)
+        public ResultType Invoke<ResultType>(string methodName, bool encode) => Invoke<ResultType>(methodName, encode, null);
+        /// <summary>
+        /// Using the base url, invokes the WebMethod with the given name
+        /// </summary>
+        /// <param name="methodName">Web Method name</param>
+        /// <param name="soapActionComplement">Includes more information on the SOAPAction parameter</param>
+        public ResultType Invoke<ResultType>(string methodName, string soapActionComplement) => Invoke<ResultType>(methodName, false, soapActionComplement);
+        /// <summary>
+        /// Using the base url, invokes the WebMethod with the given name
+        /// </summary>
+        /// <param name="methodName">Web Method name</param>
+        /// <param name="encode">Encode params</param>
+        /// <param name="soapActionComplement">Includes more information on the SOAPAction parameter</param>
+        public ResultType Invoke<ResultType>(string methodName, bool encode, string soapActionComplement)
         {
             try
             {
@@ -90,10 +112,10 @@ namespace HodStudio.XitSoap
                 if (string.IsNullOrEmpty(Url) && contract == null)
                     throw new MethodAccessException("You tried to invoke a webservice without specifying the WebService's Contract/URL.");
                 ValidateContract(contract);
-                
+
                 Result = new WebServiceResult();
                 ResponseMappers.GetMapperAttributes(typeof(ResultType));
-                this.InvokeService(methodName, encode);
+                this.InvokeService(methodName, encode, soapActionComplement);
                 return ExtractResultClass<ResultType>(methodName);
             }
             finally
