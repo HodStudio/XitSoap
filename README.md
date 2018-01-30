@@ -8,7 +8,7 @@ _An alternative way to do SOAP Requests without use the WSDL_
 
 
 
-In 2015, we face a very simple problem: the code generated automatically by Visual Studio to use webservices has a lot of shits. Facing this problem, we resolve to create a library that, based on your model, generates the SOAP requests, without code smells on you code.
+In 2015, we face a very simple problem: the code generated automatically by Visual Studio to use webservices has a lot of shit. Facing this problem, we created a library that, based on you modelr, generates the SOAP requests, without code smells on your code.
 
 ## Download it using NuGet
 ```
@@ -16,15 +16,15 @@ Install-Package HodStudio.XitSoap
 ```
 Link: https://www.nuget.org/packages/HodStudio.XitSoap
 ## ATTENTION
-If you are using the version 1.x from our library, please, read carefully how to upgrade to version 2.x because it is a major refactory to improve some usages. It's nothing complicated, but if you just upgrade from version 1 to version 2, you code will have some problems.
+If you are using the version 1.x from our library, please, read carefully how to upgrade to version 2.x because it is a major refactor to improve some usages. It's nothing complicated, but if you just upgrade from version 1 to version 2, your code will have some problems.
 ### [Migrating from v1 to v2](https://github.com/HodStudio/XitSoap/wiki/Migrating-from-v1-to-v2).
 
 ## How to use
-Crete a object of _WebService_, with the base URL and the namespace that will be used.
+Create an object of _WebService_, with the base URL and the namespace that will be used.
 ```cs
 var wsCon = new WebService("http://www.webservicex.net/ConvertSpeed.asmx", "http://www.webserviceX.NET/");
 ```
-Add the parameters to execute you call.
+Add the parameters to execute your call.
 ```cs
 wsCon.AddParameter("speed", 100D);
 wsCon.AddParameter("FromUnit", "milesPerhour");
@@ -39,4 +39,4 @@ For more situations and examples, please, take a look on our Documentation on th
 
 To see the planned new features, take a look on our [RoadMap](https://github.com/HodStudio/XitSoap/wiki#road-map-in-eternal-construction).
 ## Download the source code and running
-To run the tests, we provide a mock project Web. It should be runned on http://localhost/XitSoap so the tests can try to connect to it. Some of the tests are runned against some published web services on the internet. Case you are not connect to it, they will fail.
+To run the tests, we provide a mock project _Web_. It should be runned on http://localhost/XitSoap so the tests can try to connect to it. Some of the tests are runned against published web services on the internet. In case you are not connected to the internet, they will fail.
