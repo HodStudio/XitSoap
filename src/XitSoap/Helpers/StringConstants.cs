@@ -14,7 +14,7 @@
                   </soap:Body>
                 </soap:Envelope>";
         internal const string SoapHeaderName = "SOAPAction";
-        internal const string SoapHeaderFormat = "\"{0}/{1}\"";
+        internal const string SoapHeaderFormat = "\"{0}/{1}{2}\"";
         internal const string SoapContentType = "text/xml;charset=\"utf-8\"";
         internal const string SoapAccept = "text/xml";
         internal const string SoapMethod = "POST";

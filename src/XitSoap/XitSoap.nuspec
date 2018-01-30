@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HodStudio.XitSoap</id>
-    <version>2.0.1</version>
+    <version>2.1.0-beta</version>
     <authors>Cussa</authors>
     <owners>Cussa</owners>
     <licenseUrl>https://github.com/HodStudio/XitSoap/blob/master/LICENSE</licenseUrl>
@@ -10,8 +10,8 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>An alternative way to do SOAP Requests without use the WSDL</description>
     <releaseNotes>
-      Version 2.0.1
-      - Fixing #2: class WebService was internal, and not public
+      Version 2.1.0-beta
+      - Fixing #3: adding a new parameter to do requests (SoapActionComplement)
     </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>soap request soap-web-services webservices</tags>
