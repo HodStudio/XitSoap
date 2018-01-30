@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -46,6 +45,17 @@ namespace HodStudio.XitSoap.Helpers
             req.ContentType = StringConstants.SoapContentType;
             req.Accept = StringConstants.SoapAccept;
             req.Method = StringConstants.SoapMethod;
+
+            if (service.AuthenticationInfo != null)
+            {
+                req.PreAuthenticate = true;
+                req.Headers.Add("Authorization", service.AuthenticationInfo.AuthenticationHeader);
+            }
+
+            foreach (var item in service.Headers)
+            {
+                req.Headers.Add(item.Key, item.Value);
+            }
 
             var postValues = new StringBuilder();
             foreach (var param in service.Parameters)

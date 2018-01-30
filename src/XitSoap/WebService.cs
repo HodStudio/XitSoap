@@ -1,4 +1,5 @@
-﻿using HodStudio.XitSoap.Helpers;
+﻿using HodStudio.XitSoap.Authentication;
+using HodStudio.XitSoap.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +17,9 @@ namespace HodStudio.XitSoap
 
         public string Url { get; private set; }
         public string Namespace { get; private set; }
+
+        internal IAuthentication AuthenticationInfo { get; private set; }
+        internal Dictionary<string, string> Headers { get; } = new Dictionary<string, string>();
 
         internal WebServiceResult Result { get; set; }
 
@@ -47,6 +51,12 @@ namespace HodStudio.XitSoap
         {
             this.AddMethodParameter(name, value);
         }
+        #endregion
+
+        #region Authentication/Header
+        public void SetAuthentication(IAuthentication authentication) => AuthenticationInfo = authentication ?? throw new ArgumentNullException(nameof(authentication));
+        public void AddHeader(string key, string value) => Headers.Add(key, value);
+        public void RemoveHeader(string key) => Headers.Remove(key);
         #endregion
 
         #region Invoke Methods
