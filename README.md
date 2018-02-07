@@ -4,8 +4,9 @@
 
 _An alternative way to do SOAP Requests without use the WSDL_
 
-[![Quality Gate](https://sonarqube.com/api/badges/gate?key=HodStudio.XitSoap)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=code_smells)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=bugs)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=vulnerabilities)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap) [![Quality Gate](https://sonarqube.com/api/badges/measure?key=HodStudio.XitSoap&metric=duplicated_lines_density)](https://sonarqube.com/dashboard/index/HodStudio.XitSoap)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=HodStudio.XitSoap&metric=bugs)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) [![CodeSmells](https://sonarcloud.io/api/project_badges/measure?project=HodStudio.XitSoap&metric=code_smells)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) [![vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=HodStudio.XitSoap&metric=vulnerabilities)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) [![Duplicated Lines](https://sonarcloud.io/api/project_badges/measure?project=HodStudio.XitSoap&metric=duplicated_lines_density)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) [![sqale_index](https://sonarcloud.io/api/project_badges/measure?project=HodStudio.XitSoap&metric=sqale_index)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) 
 
+[![sqale_rating](https://sonarcloud.io/api/project_badges/measure?project=HodStudio.XitSoap&metric=sqale_rating)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) [![reliability_rating](https://sonarcloud.io/api/project_badges/measure?project=HodStudio.XitSoap&metric=reliability_rating)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) [![security_rating](https://sonarcloud.io/api/project_badges/measure?project=HodStudio.XitSoap&metric=security_rating)](https://sonarqube.com/dashboard?id=HodStudio.XitSoap) 
 
 
 In 2015, we face a very simple problem: the automatically generated code by Visual Studio to use webservices has a lot of code smells. Facing this problem, we created a library that generates the SOAP requests based on your models, without code smells in your code.
@@ -29,6 +30,10 @@ Add the parameters to execute your call.
 wsCon.AddParameter("speed", 100D);
 wsCon.AddParameter("FromUnit", "milesPerhour");
 wsCon.AddParameter("ToUnit", "kilometersPerhour");
+```
+Add the authentication.
+```cs
+wsCon.SetAuthentication(new BearerTokenAuthentication("myBearerToken"));
 ```
 Invoke the method, providing the return type.
 ```cs
