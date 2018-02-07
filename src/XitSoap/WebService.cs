@@ -54,7 +54,13 @@ namespace HodStudio.XitSoap
         #endregion
 
         #region Authentication/Header
-        public void SetAuthentication(IAuthentication authentication) => AuthenticationInfo = authentication ?? throw new ArgumentNullException(nameof(authentication));
+        public void SetAuthentication(IAuthentication authentication)
+        {
+            if (authentication == null)
+                throw new ArgumentNullException(nameof(authentication));
+
+            AuthenticationInfo = authentication;
+        }
         public void AddHeader(string key, string value) => Headers.Add(key, value);
         public void RemoveHeader(string key) => Headers.Remove(key);
         #endregion
