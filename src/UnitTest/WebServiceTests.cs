@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
 using System.Diagnostics.CodeAnalysis;
+using HodStudio.XitSoap.Authentication;
 
 namespace HodStudio.XitSoap.Tests
 {
@@ -121,6 +122,8 @@ namespace HodStudio.XitSoap.Tests
             var webService = new WebService("https://webservice.ourcompany.com/QuotaDistributionService/QuotaDistributionService.svc",
 "http://schemas.ourcompany.com/Ourcompany.Services.QuotaDistributionService/2.0");
 
+            //webService.SetAuthentication(new BasicAuthentication("user", "password"));
+            webService.SetAuthentication(new BearerTokenAuthentication("XPTOAJFOAJJDFKJHFKASKFHSAKASDA445454576S"));
             webService.Invoke("IsAlive", "IQuotaDistributionService");
 
 

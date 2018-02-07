@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HodStudio")]
 [assembly: AssemblyProduct("HodStudio.XitSoap")]
-[assembly: AssemblyCopyright("Copyright © HodStudio 2017")]
+[assembly: AssemblyCopyright("Copyright © HodStudio 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -17,6 +17,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("2.1.0")]
 [assembly: AssemblyFileVersion("2.1.0")]
-[assembly: AssemblyInformationalVersion("2.1.0-beta")]
+[assembly: AssemblyInformationalVersion("2.1.0")]
 
 [assembly: InternalsVisibleTo("HodStudio.XitSoap.Tests.UnitTest")]

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>HodStudio.XitSoap</id>
-    <version>2.1.0-beta</version>
+    <version>2.1.0.2-beta</version>
     <authors>Cussa</authors>
     <owners>Cussa</owners>
     <licenseUrl>https://github.com/HodStudio/XitSoap/blob/master/LICENSE</licenseUrl>
@@ -10,8 +10,11 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>An alternative way to do SOAP Requests without use the WSDL</description>
     <releaseNotes>
-      Version 2.1.0-beta
-      - Fixing #3: adding a new parameter to do requests (SoapActionComplement)
+      Version 2.1.0.2-beta
+      - Implementing #6:
+        * add Authentication (basic and BearerToken)
+        * AddHeader
+        * RemoveHeader
     </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>soap request soap-web-services webservices</tags>
