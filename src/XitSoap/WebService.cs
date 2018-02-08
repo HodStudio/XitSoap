@@ -20,6 +20,7 @@ namespace HodStudio.XitSoap
 
         internal IAuthentication AuthenticationInfo { get; private set; }
         internal Dictionary<string, string> Headers { get; } = new Dictionary<string, string>();
+        public System.Net.CookieContainer CookieContainer { get; set; }
 
         internal WebServiceResult Result { get; set; }
 
