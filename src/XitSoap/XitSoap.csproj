@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <DebugType>Full</DebugType>
+    <ProjectGuid>
+      C09A69D5-A75E-47AE-AEFF-81A092951890
+    </ProjectGuid>
   </PropertyGroup>
 
   <PropertyGroup>
