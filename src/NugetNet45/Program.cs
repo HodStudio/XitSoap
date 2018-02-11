@@ -3,6 +3,8 @@ using System;
 
 namespace NugetNet45
 {
+
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     class Program
     {
         static void Main(string[] args)
