@@ -18,5 +18,10 @@ namespace HodStudio.XitSoap.Helpers
             }
             service.Parameters.Add(name, completeXml.DocumentElement.InnerXml);
         }
+
+        internal static void AddMethodParameter(this WebService service, string name, string value)
+        {
+            service.Parameters.Add(name, value);
+        }
     }
 }
