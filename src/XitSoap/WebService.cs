@@ -6,6 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
+
+#region InternalsVisibleTo
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("HodStudio.XitSoap.Tests.UnitTest")]
+#endregion
+
 namespace HodStudio.XitSoap
 {
     public class WebService

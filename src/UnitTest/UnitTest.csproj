@@ -70,7 +70,7 @@
       <Name>Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\XitSoap\XitSoap.csproj">
-      <Project>{C03F5B15-A729-4C77-AC6D-E92300BED346}</Project>
+      <Project>{c03f5b15-a729-4c77-ac6d-e92300bed346}</Project>
       <Name>XitSoap</Name>
     </ProjectReference>
   </ItemGroup>
