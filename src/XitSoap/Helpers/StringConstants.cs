@@ -2,7 +2,6 @@
 {
     internal class StringConstants
     {
-        protected StringConstants() { }
         internal const string SoapStringFormat = @"<?xml version=""1.0"" encoding=""utf-8""?>
                 <soap:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
                    xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
