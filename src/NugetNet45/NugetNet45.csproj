@@ -41,7 +41,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="XitSoap, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HodStudio.XitSoap.2.2.0.2-beta\lib\net45\XitSoap.dll</HintPath>
+      <HintPath>..\packages\HodStudio.XitSoap.2.2.0\lib\net45\XitSoap.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
