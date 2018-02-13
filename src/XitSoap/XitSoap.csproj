@@ -10,7 +10,7 @@
 
   <PropertyGroup>
     <PackageId>HodStudio.XitSoap</PackageId>
-    <PackageVersion>2.2.0.2-beta</PackageVersion>
+    <PackageVersion>2.2.0</PackageVersion>
     <Authors>Cussa</Authors>
     <Description>An alternative way to do SOAP Requests without use the WSDL</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -19,7 +19,7 @@
     <PackageIconUrl>https://github.com/HodStudio/XitSoap/raw/master/xitSoap.png?raw=true</PackageIconUrl>
     <PackageTags>soap;SOAP;request;soap-web-services;webservices</PackageTags>
     <PackageReleaseNotes>
-      Version 2.2.0.2-beta
+      Version 2.2.0
       - Implementing #10: CookieContainer [https://github.com/HodStudio/XitSoap/issues/10]
       - Implementing #11: NetStandard 2.0 [https://github.com/HodStudio/XitSoap/issues/11]
     </PackageReleaseNotes>
