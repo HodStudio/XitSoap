@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 using System.Xml;
 using System.Diagnostics.CodeAnalysis;
 using HodStudio.XitSoap.Authentication;
+using System;
 
 namespace HodStudio.XitSoap.Tests
 {
@@ -70,6 +71,60 @@ namespace HodStudio.XitSoap.Tests
         }
 
         [TestMethod]
+        public void AddHeaderTest()
+        {
+            var wsCon = new WebService();
+            var paramName = "abc";
+            var paramValue = "xyz";
+            wsCon.AddHeader(paramName, paramValue);
+
+            Assert.AreEqual(wsCon.Headers.Count, 1);
+            Assert.AreEqual(wsCon.Headers[paramName], paramValue);
+        }
+
+        [TestMethod]
+        public void RemoveHeaderTest()
+        {
+            var wsCon = new WebService();
+            var paramName = "abc";
+            var paramValue = "xyz";
+            wsCon.AddHeader(paramName, paramValue);
+
+            wsCon.RemoveHeader(paramName);
+
+            Assert.AreEqual(wsCon.Parameters.Count, 0);
+        }
+
+        [TestMethod]
+        public void SetAuthenticationTest()
+        {
+            var wsCon = new WebService();
+            wsCon.SetAuthentication(new BasicAuthentication("user", "password"));
+
+            Assert.IsNotNull(wsCon.AuthenticationInfo);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SetNullAuthenticationTest()
+        {
+            var wsCon = new WebService();
+            wsCon.SetAuthentication(null);
+
+            Assert.IsNotNull(wsCon.AuthenticationInfo);
+        }
+
+        [TestMethod]
+        public void SetCookieContainerTest()
+        {
+            var cookieContainer = new System.Net.CookieContainer();
+            var wsCon = new WebService() { CookieContainer = cookieContainer };
+
+            Assert.IsNotNull(wsCon.CookieContainer);
+            Assert.AreEqual(wsCon.CookieContainer, cookieContainer);
+        }
+
+        [TestMethod]
         public void InvokeReturningDefaultTest()
         {
             var wsCon = new WebService("http://localhost/XitSoap/ProductService.asmx");
@@ -116,48 +171,6 @@ namespace HodStudio.XitSoap.Tests
             Assert.AreEqual(expectedString, actualString);
         }
 
-        [TestMethod]
-        public void WebServiceMaracujaJuice()
-        {
-            var webService = new WebService("https://webservice.ourcompany.com/QuotaDistributionService/QuotaDistributionService.svc",
-"http://schemas.ourcompany.com/Ourcompany.Services.QuotaDistributionService/2.0");
 
-            //webService.SetAuthentication(new BasicAuthentication("user", "password"));
-            webService.SetAuthentication(new BearerTokenAuthentication("XPTOAJFOAJJDFKJHFKASKFHSAKASDA445454576S"));
-            webService.Invoke("IsAlive", "IQuotaDistributionService");
-
-
-        }
-
-        //[TestMethod]
-        //public void CleanLastInvokeTest()
-        //{
-        //    var wsCon = new WebService();
-        //    AddInfoCleanLastInvokeTest(wsCon);
-
-        //    wsCon.CleanLastInvoke();
-
-        //    AssertInfoCleanLastInvokeTest(wsCon);
-        //}
-
-        //internal static void AddInfoCleanLastInvokeTest(WebService wsCon)
-        //{
-        //    var paramName = "abc";
-        //    var paramValue = "xyz";
-        //    wsCon.AddParameter(paramName, paramValue);
-
-        //    wsCon.ResultString = "true";
-        //    wsCon.ResultXml = new System.Xml.Linq.XDocument();
-        //    wsCon.ResponseSoap = new System.Xml.Linq.XDocument();
-        //}
-
-        //internal static void AssertInfoCleanLastInvokeTest(WebService wsCon)
-        //{
-        //    Assert.AreEqual(wsCon.ResultString, string.Empty);
-        //    Assert.AreEqual(wsCon.ResultXml, null);
-        //    Assert.AreEqual(wsCon.ResponseSoap, null);
-        //    Assert.AreEqual(wsCon.Method, string.Empty);
-        //    Assert.AreEqual(wsCon.Params.Count, 0);
-        //}
     }
 }

@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Attributes\WsContractAttributeTests.cs" />
     <Compile Include="Attributes\WsMapperAttributeTests.cs" />
+    <Compile Include="Authentication\BearerTokenAuthenticationTests.cs" />
+    <Compile Include="Authentication\BasicAuthenticationTests.cs" />
     <Compile Include="MyExpectedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationInvokeTests.cs" />
@@ -70,7 +72,7 @@
       <Name>Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\XitSoap\XitSoap.csproj">
-      <Project>{C03F5B15-A729-4C77-AC6D-E92300BED346}</Project>
+      <Project>{c03f5b15-a729-4c77-ac6d-e92300bed346}</Project>
       <Name>XitSoap</Name>
     </ProjectReference>
   </ItemGroup>

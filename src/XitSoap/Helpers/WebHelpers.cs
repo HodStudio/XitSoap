@@ -46,6 +46,8 @@ namespace HodStudio.XitSoap.Helpers
             req.Accept = StringConstants.SoapAccept;
             req.Method = StringConstants.SoapMethod;
 
+            req.CookieContainer = service.CookieContainer;
+
             if (service.AuthenticationInfo != null)
             {
                 req.PreAuthenticate = true;

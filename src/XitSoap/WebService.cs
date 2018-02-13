@@ -6,6 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
+
+#region InternalsVisibleTo
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("HodStudio.XitSoap.Tests.UnitTest")]
+#endregion
+
 namespace HodStudio.XitSoap
 {
     public class WebService
@@ -20,6 +26,7 @@ namespace HodStudio.XitSoap
 
         internal IAuthentication AuthenticationInfo { get; private set; }
         internal Dictionary<string, string> Headers { get; } = new Dictionary<string, string>();
+        public System.Net.CookieContainer CookieContainer { get; set; }
 
         internal WebServiceResult Result { get; set; }
 

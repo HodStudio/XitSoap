@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XitSoap", "XitSoap\XitSoap.csproj", "{C03F5B15-A729-4C77-AC6D-E92300BED346}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XitSoap", "XitSoap\XitSoap.csproj", "{C03F5B15-A729-4C77-AC6D-E92300BED346}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{C0C5C06D-4A65-42FF-A858-F930C43947FA}"
 EndProject
@@ -14,6 +14,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{F2247A7A-2D8D-42BD-8E7C-30B5FF5A2110}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3EA7E5CF-F1E3-4E0A-ACA0-14DAA3E09EAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetNet45", "NugetNet45\NugetNet45.csproj", "{B92E9434-5284-4E7F-BA61-FDB06C623E8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetNetStandard", "NugetNetStandard\NugetNetStandard.csproj", "{7B63E92A-A06B-4664-9CF7-8866710CF6BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NugetTests", "NugetTests", "{313634F8-B587-4331-9659-EC511B374064}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +43,14 @@ Global
 		{68028D29-0D28-406E-A598-18A7CCE2264F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68028D29-0D28-406E-A598-18A7CCE2264F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68028D29-0D28-406E-A598-18A7CCE2264F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B92E9434-5284-4E7F-BA61-FDB06C623E8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B92E9434-5284-4E7F-BA61-FDB06C623E8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B92E9434-5284-4E7F-BA61-FDB06C623E8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B92E9434-5284-4E7F-BA61-FDB06C623E8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B63E92A-A06B-4664-9CF7-8866710CF6BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B63E92A-A06B-4664-9CF7-8866710CF6BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B63E92A-A06B-4664-9CF7-8866710CF6BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B63E92A-A06B-4664-9CF7-8866710CF6BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +60,10 @@ Global
 		{C0C5C06D-4A65-42FF-A858-F930C43947FA} = {3EA7E5CF-F1E3-4E0A-ACA0-14DAA3E09EAC}
 		{8A6D1D77-0C39-4B78-94AA-FE642F985AED} = {3EA7E5CF-F1E3-4E0A-ACA0-14DAA3E09EAC}
 		{68028D29-0D28-406E-A598-18A7CCE2264F} = {3EA7E5CF-F1E3-4E0A-ACA0-14DAA3E09EAC}
+		{B92E9434-5284-4E7F-BA61-FDB06C623E8D} = {313634F8-B587-4331-9659-EC511B374064}
+		{7B63E92A-A06B-4664-9CF7-8866710CF6BC} = {313634F8-B587-4331-9659-EC511B374064}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F7135820-2D39-4914-894D-5B08888AC957}
 	EndGlobalSection
 EndGlobal
